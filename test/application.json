@@ -1,0 +1,42 @@
+{
+
+	"production": {
+		"port": 8002,
+		"name": "production",
+		"host": "localhost",
+		"list": [
+			"first",
+			"second",
+			"third"
+		],
+		"list2": [
+			"another",
+			"one"
+		],
+		"property": {
+			"subproperty": "value_sub",
+			"subproperty2": "value_sub2"
+		}
+	},
+
+	"production:development": {
+		"port": 8080,
+		"name": "development",
+		"list2": [
+			"first",
+			"second",
+			"third"
+		],
+		"property": {
+			"subproperty": "overwrited_value_sub"
+		}
+	},
+
+	"development:preproduction": {
+		"name": "preproduction"
+	},
+
+	"production:preproduction:production:test": {
+		"port": 8888
+	}
+}
