@@ -7,7 +7,7 @@ Manage properties from a json with several environments.
 $ npm install git+https://github.com/Epiconcept-Paris/voo-config.git#1.0.0
 ```
 
-## Usage with file
+## Usage with file (NodeJS server)
 > Application.json
 ```
 {
@@ -29,11 +29,15 @@ $ npm install git+https://github.com/Epiconcept-Paris/voo-config.git#1.0.0
 ```
 // using an ES2015 transpiler, like babel
 import Config from 'voo-config';
+import fs from 'fs';
+import path from 'path';
 
 // not using an ES6 transpiler
 var Config = require('voo-config');
+var fs = require('fs');
+var path = require('path');
 
-Config.fromFile(path.join(__dirname, 'application.json'));
+Config.fromFile(fs, path.join(__dirname, 'application.json'));
 Config.setEnv('development');
 
 // return 8080

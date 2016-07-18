@@ -1,6 +1,7 @@
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import path from 'path';
+import fs from 'fs';
 import Config from '../lib';
 
 describe('voo-config', () => {
@@ -17,9 +18,48 @@ describe('voo-config', () => {
 		done();
 	});
 
-	it('should load from file', done => {
+	it('should reset when needed', done => {
+		// setup
+		Config.fromObject({
+			development: {
+				name: 'root'
+			}
+		});
+		Config.setEnv('development');
+		const sName = Config.get('name');
+		expect(sName).to.be.equal('root');
+
+		Config.reset();
+		const sNewName = Config.get('name');
+		expect(sNewName).to.be.an('undefined');
+
+		done();
+	});
+
+	it('should throw error if try to load from file with missing FileSystem package', done => {
+		Config.reset();
+
+		const sError = 'FileSystem package has not been provided as first argument.';
+
 		const sFilePath = path.join(__dirname, 'application.json');
-		Config.fromFile(sFilePath);
+		expect(() => Config.fromFile(sFilePath)).to.throw(sError);
+		expect(() => Config.fromFile(sFilePath, fs)).to.throw(sError);
+		expect(() => Config.fromFile({}, sFilePath)).to.throw(sError);
+		expect(() => Config.fromFile(undefined, sFilePath)).to.throw(sError);
+
+		done();
+	});
+
+	it('should load from file', done => {
+		Config.reset();
+
+		const sFilePath = path.join(__dirname, 'application.json');
+		Config.fromFile(fs, sFilePath);
+
+		Config.setEnv('development');
+		const iPort = Config.get('port');
+		expect(iPort).to.be.equal(8080);
+
 		done();
 	});
 

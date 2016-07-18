@@ -1,4 +1,3 @@
-import fs from 'fs';
 import Builder from './builder';
 
 let sEnvironment = process.env.NODE_ENV || 'development';
@@ -21,8 +20,12 @@ export default {
 		// create an global object with all the configuration for the app
 		global.CONFIG = oConfig;
 	},
-	fromFile(sFilePath) {
-		const oContentFile = fs.readFileSync(sFilePath, 'utf-8');
+	fromFile(oFileSystemPackage, sFilePath) {
+		if (typeof oFileSystemPackage !== 'object' || oFileSystemPackage.readFileSync === undefined) {
+			throw new Error('FileSystem package has not been provided as first argument.');
+		}
+
+		const oContentFile = oFileSystemPackage.readFileSync(sFilePath, 'utf-8');
 		oBuilder = new Builder(JSON.parse(oContentFile));
 		oConfig = oBuilder.build(sEnvironment);
 		// create an global object with all the configuration for the app
@@ -65,5 +68,10 @@ export default {
 		);
 
 		return oValue || oDefault;
+	},
+	reset() {
+		oBuilder = new Builder();
+		oConfig = {};
+		global.CONFIG = oConfig;
 	}
 };
