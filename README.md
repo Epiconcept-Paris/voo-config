@@ -4,7 +4,7 @@ Manage properties from a json with several environments.
 
 ## Install
 ```
-$ npm install git+https://github.com/Epiconcept-Paris/voo-config.git#1.0.0
+$ npm install git+https://github.com/Epiconcept-Paris/voo-config.git#2.0.0
 ```
 
 ## Usage with file (NodeJS server)
@@ -37,11 +37,11 @@ var Config = require('voo-config');
 var fs = require('fs');
 var path = require('path');
 
-Config.fromFile(fs, path.join(__dirname, 'application.json'));
-Config.setEnv('development');
+var oConfig = Config.fromFile(fs, path.join(__dirname, 'application.json'));
+oConfig.setEnv('development');
 
 // return 8080
-Config.get('port');
+oConfig.get('port');
 ```
 ## Usage with JS object
 ```
@@ -51,34 +51,34 @@ import Config from 'voo-config';
 // not using an ES6 transpiler
 var Config = require('voo-config');
 
-Config.fromObject({
+var oConfig = Config.fromObject({
   development: {
     name: "test"
   }
 });
 
-Config.setEnv('development');
+oConfig.setEnv('development');
 // return 'test'
-Config.get('name');
+oConfig.get('name');
 ```
 ## How to get property ? (es2015)
 ```
-Config.setEnv('development');
+oConfig.setEnv('development');
 // return 8080
-Config.get('port');
+oConfig.get('port');
 // return 'localhost'
-Config.get('host');
+oConfig.get('host');
 
-Config.setEnv('production');
+oConfig.setEnv('production');
 // return 8002
-Config.get('port');
+oConfig.get('port');
 // return 'localhost'
-Config.get('host');
+oConfig.get('host');
 ```
 ### How to get property with default value? (es2015)
 ```
 // return 'default value'
-Config.get('inexistant-property', 'default value');
+oConfig.get('inexistant-property', 'default value');
 ```
 ### How to get severals properties with default values? (es2015)
 ```
@@ -86,8 +86,8 @@ Config.get('inexistant-property', 'default value');
 //    'inexistant-property': 'default value',
 //    'port': 8002
 // }
-Config.setEnv('production');
-Config.get(['inexistant-property', 'port'], ['default value']);
+oConfig.setEnv('production');
+oConfig.get(['inexistant-property', 'port'], ['default value']);
 ```
 ### How to get from a sub-object? (es2015)
 ```
@@ -96,11 +96,11 @@ Config.get(['inexistant-property', 'port'], ['default value']);
 //    'password': 'secret',
 //    'locales': ['en', 'fr']
 // }
-Config.setEnv('development');
-Config.get('admin');
+oConfig.setEnv('development');
+oConfig.get('admin');
 
 // return 'root'
-Config.get('admin.name');
+oConfig.get('admin.name');
 // return ['en', 'fr']
-Config.get('admin.locales');
+oConfig.get('admin.locales');
 ```
